@@ -215,6 +215,58 @@ bsub -I -b -q q_sw_expr -n 1 -cgsp 64 ./arrAdd
 
 若使用附录\ref{apdx:第一个程序}中的程序，在程序执行完成后可得到并行和非并行计算的结果与时间对比。
 
+\section{使用Linux make进行编译和运行}
+\subsection{Linux make和Makefile介绍}
+在装有GNU Make的Linux系统上，make是一条可执行指令，该指令读入一个名为Makefile的文件，通过执行这个文件中指定的指令完成程序的编译、安装和运行。该指令有如下功能：
+\begin{enumerate}
+  \item 使最终用户可以在不知道构建细节的情况下构建和安装软件，构建细节都记录在所提供的Makefile中，用户只需要在Makefile文件所在目录下键入make指令即可；
+  \item make可以通过读取和记录文件修改时间自动知道那些文件需要更新（重新编译），并且它也会通过Makefile中所记录的文件依赖关系自动决定文件更新的适当顺序，使得相关的文件一并更新；
+  \item make本质上只是一个系统指令的执行器，只要是能通过键入指令完成构建和运行的程序都可以通过make完成构建和运行，因此make的使用不限于任何一种特定的语言。对于程序中任何一种非源文件， makefile文件中可以指定shell指令去生成它。shell 指令可以执行编译器生成目标文件，执行链接器生成可执行文件，执行ar更新库文件，执行TeX（一个文本排版软件）或Makeinfo去格式化文档等。
+\end{enumerate}
+\subsection{Makefile的格式}
+Makefile文件的语法可以看作是一系列的任务定义，定义任务的文本格式非常简单：
+\begin{lstlisting}
+target:[dependencies \dots]
+  command
+  command
+  \dots
+\end{lstlisting}
+其各部分的用处如下：
+\begin{itemize}
+  \item target：定义任务名称。每个Malefile文件都包含有多个任务，每个任务都有一个唯一的target指定这个任务的名称。任务的名称只是这个任务的一个代号，但是为了可读性，任务的编写和命名规则一般有如下约定：
+  \begin{itemize}
+    \item 将生成中间文件、编译、清理生成文件、运行等任务分开编写；
+    \item 如果这个任务的作用是生成一个文件，则任务名是要生成的文件名；
+    \item 如果这个任务的作用是编译整个工程，则任务名是“build”或是最终的可执行文件名；
+    \item 如果这个任务是清理生成文件，则任务名为“clean”；
+    \item 如果这个任务是运行，则任务名为“run”。
+  \end{itemize}
+  当在Malefile中定义了一个任务后，可以使用“make target”指令Malefile中定义的某个特定任务；而若直接键入“make”，则默认运行Makefile中定义的第一个任务。
+  \item [dependencies \dots]：依赖项。该项指定当前任务与哪些文件有关或是在哪些任务完成之后才能运行，dependencies是文件名称或其他任务的任务名称（target），多个名称以空格分隔。在make指令调用此任务时，make程序对dependencies中的每个名称的处理如下：
+  \begin{enumerate}
+    \item 如果有该名称对应的文件，则检查文件的修改日期，将其与上一次执行时存储的修改日期对比，若不同则说明文件被修改。如果在dependencies对应的文件中检测到任何一个文件被修改，则先执行该名称对应的任务（如果有的话，否则只执行本任务\footnote{想想看这就是以要生成的文件名作为任务名的好处}）再执行本任务；
+    \item 如果有该名称对应的任务，则检查该任务的dependencies，规则同上。
+  \end{enumerate}
+  递归式地运行以上两步，直到检查的任务中没有名称对应任务，从而能使得一个文件被修改时执行且只执行相关的任务进行中间文件和输出文件的编译更新；
+  \item command：完成任务要执行的指令。该项指定当前任务要完成哪些指令，每个指令前必须要以tab缩进，指令间以换行分隔。当调用一个任务时，该任务下定义的指令将被按顺序执行。
+\end{itemize}
+
+\subsection{编写Makefile}
+同样以\ref{subsec:并行编程思路}中编写的程序和\ref{subsec:用命令行编译程序}中的编译过程为例编写一个简单的Makefile：
+\begin{lstlisting}
+arrAdd:master_arrAdd.o slave_arrAdd.o
+  sw5cc -hybrid master_arrAdd.o slave_arrAdd.o -o arrAdd
+master_arrAdd.o:master_arrAdd.c
+  sw5cc -host -c master_arrAdd.c
+slave_arrAdd.o:slave_arrAdd.c
+  sw5cc -slave -c slave_arrAdd.c
+clean:
+  rm master_arrAdd.o slave_arrAdd.o arrAdd
+run:arrAdd
+  bsub -I -b -q q_sw_expr -n 1 -cgsp 64 ./arrAdd
+\end{lstlisting}
+按照前面所讲的文件格式和命名规则，该Makefile定义了5个任务，其中默认任务为“arrAdd”，该文件生成可执行文件“arrAdd”；此外还有一个运行任务“run”和清理任务“clean”。该文件放在和源文件同一目录下，则可在该目录下运行“make”编译程序或运行“make run”执行程序等操作。
+
 \section{总结}
 \subsection{知识点概括}
 本章主要介绍了在神威系统编写程序的流程和必须要知道的一些基本操作，内容可大致概括为图\ref{fig:Chap_Intro}。
@@ -222,7 +274,7 @@ bsub -I -b -q q_sw_expr -n 1 -cgsp 64 ./arrAdd
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=\textwidth]{Chap_Intro}
-  \caption{第一章的知识点概括}
+  \caption{第\thechapter{}章的知识点概括}
   \label{fig:Chap_Intro}
 \end{figure}
 
