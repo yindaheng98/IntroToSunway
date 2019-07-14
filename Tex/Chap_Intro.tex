@@ -216,7 +216,7 @@ bsub -I -b -q q_sw_expr -n 1 -cgsp 64 ./arrAdd
 若使用附录\ref{apdx:第一个程序}中的程序，在程序执行完成后可得到并行和非并行计算的结果与时间对比。
 
 \section{使用Linux make进行编译和运行}
-\subsection{Linux make和Makefile介绍}
+\subsection{Linux make和Makefile介绍其一}\label{subsec:Makefile介绍}
 在装有GNU Make的Linux系统上，make是一条可执行指令，该指令读入一个名为Makefile的文件，通过执行这个文件中指定的指令完成程序的编译、安装和运行。该指令有如下功能：
 \begin{enumerate}
   \item 使最终用户可以在不知道构建细节的情况下构建和安装软件，构建细节都记录在所提供的Makefile中，用户只需要在Makefile文件所在目录下键入make指令即可；
@@ -251,8 +251,8 @@ target:[dependencies \dots]
   \item command：完成任务要执行的指令。该项指定当前任务要完成哪些指令，每个指令前必须要以tab缩进，指令间以换行分隔。当调用一个任务时，该任务下定义的指令将被按顺序执行。
 \end{itemize}
 
-\subsection{编写Makefile}
-同样以\ref{subsec:并行编程思路}中编写的程序和\ref{subsec:用命令行编译程序}中的编译过程为例编写一个简单的Makefile：
+\subsection{编写Makefile}\label{subsec:编写Makefile}
+以\ref{subsec:并行编程思路}中编写的程序和\ref{subsec:用命令行编译程序}中的编译过程为例编写一个简单的Makefile：
 \begin{lstlisting}
 arrAdd:master_arrAdd.o slave_arrAdd.o
   sw5cc -hybrid master_arrAdd.o slave_arrAdd.o -o arrAdd
@@ -265,6 +265,7 @@ clean:
 run:arrAdd
   bsub -I -b -q q_sw_expr -n 1 -cgsp 64 ./arrAdd
 \end{lstlisting}
+
 按照前面所讲的文件格式和命名规则，该Makefile定义了5个任务，其中默认任务为“arrAdd”，该文件生成可执行文件“arrAdd”；此外还有一个运行任务“run”和清理任务“clean”。该文件放在和源文件同一目录下，则可在该目录下运行“make”编译程序或运行“make run”执行程序等操作。
 
 \section{总结}

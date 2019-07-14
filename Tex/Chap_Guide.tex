@@ -1,82 +1,94 @@
-\chapter{\LaTeX{}使用说明}\label{chap:guide}
-
-为方便使用及更好地展示\LaTeX{}排版的优秀特性，ucasthesis的框架和文件体系进行了细致地处理，尽可能地对各个功能和板块进行了模块化和封装，对于初学者来说，众多的文件目录也许一开始让人觉得有些无所适从，但阅读完下面的使用说明后，会发现原来使用思路是简单而清晰的，而且，当对\LaTeX{}有一定的认识和了解后，会发现其相对Word类排版系统极具吸引力的优秀特性。所以，如果是初学者，请不要退缩，请稍加尝试和坚持，以领略到\LaTeX{}的非凡魅力，并可以通过阅读相关资料如\LaTeX{} Wikibook \citep{wikibook2014latex} 来完善自己的使用知识。
-
-\section{先试试效果}
-
-\begin{enumerate}
-    \item 安装软件：根据所用操作系统和章节~\ref{sec:system}中的信息安装\LaTeX{}编译环境。
-    \item 获取模板：下载 \href{https://github.com/mohuangrui/ucasthesis}{ucasthesis} 模板并解压。ucasthesis模板不仅提供了相应的类文件，同时也提供了包括参考文献等在内的完成学位论文的一切要素，所以，下载时，推荐下载整个ucasthesis文件夹，而不是单独的文档类。
-    \item 编译模板：
-        \begin{enumerate}
-            \item Windows：双击运行artratex.bat脚本。
-            \item Linux或MacOS: {\scriptsize \verb|terminal| -> \verb|chmod +x ./artratex.sh| -> \verb|./artratex.sh xa|}
-            \item 任意系统：都可使用\LaTeX{}编辑器打开Thesis.tex文件并选择xelatex编译引擎进行编译。
-        \end{enumerate}
-    \item 错误处理：若编译中遇到了问题，请先查看“常见问题”（章节~\ref{sec:qa}）。
-\end{enumerate}
-
-编译完成即可获得本PDF说明文档。而这也完成了学习使用ucasthesis撰写论文的一半进程。什么？这就学成一半了，这么简单？？？，是的，就这么简单！
-
-\section{文档目录简介}
-
-\subsection{Thesis.tex}
-
-Thesis.tex为主文档，其设计和规划了论文的整体框架，通过对其的阅读可以了解整个论文框架的搭建。
-
-\subsection{编译脚本}
-
+\chapter{Darknet移植}
+\section{Darknet介绍\cite{darknet13}}
+Darknet是一个开源的C语言神经网络框架，由著名的机器视觉专家Joseph Redmon开发。Darknet性能优异，安装简单，在目标识别领域有广泛应用的YOLO模型\cite{yolov3}的最初版本就是在这个框架下开发的。作为作为“神威 · 太湖之光”并行编程的入门练习，Darknet有如下优点\cite{darknet_note}：
 \begin{itemize}
-    \item Windows：双击Dos脚本artratex.bat可得全编译后的PDF文档，其存在是为了帮助不了解\LaTeX{}编译过程的初学者跨过编译这第一道坎，请勿通过邮件传播和接收此脚本，以防范Dos脚本的潜在风险。
-    \item Linux或MacOS：在terminal中运行
-        \begin{itemize}
-            \item \verb|./artratex.sh xa|：获得全编译后的PDF文档
-            \item \verb|./artratex.sh x|：快速编译，不会生成文献引用
-        \end{itemize}
+    \item 易于安装：在makefile里面选择自己需要的附加项（cuda，cudnn，opencv等）直接make即可；
+    \item 没有任何依赖项：整个框架都用C语言进行编写，可以不依赖任何库，连opencv作者都编写了可以对其进行替代的函数；
+    \item 结构清晰：其框架的基础文件都在src文件夹，而定义的一些检测、分类函数则在example文件夹，可根据需要直接对源代码进行查看和修改；
+    \item 友好python接口：虽然darknet使用c语言进行编写，但是也提供了python的接口，通过python函数，能够使用python直接对训练好的.weight格式的模型进行调用；
+    \item 易于移植：该框架部署十分简单，且可以根据机器情况，使用cpu和gpu，特别是检测识别任务的本地端部署，darknet会显得异常方便。
 \end{itemize}
 
-全编译指运行 \verb|xelatex+bibtex+xelatex+xelatex| 以正确生成所有的引用链接，如目录，参考文献及引用等。在写作过程中若无添加新的引用，则可用快速编译，即只运行一遍\LaTeX{}编译引擎以减少编译时间。
+此外，由于Darknet是一个神经网络框架，其中的主要运算任务都可以以矩阵计算的形式所表述，这使得Darknet的移植和优化有助于读者对矩阵和并行更加深入的理解。最后，Darknet框架整体结构比较成熟完整，读者能在移植和优化过程中了解到优秀的机器学习框架的架构与编写方式，对软件架构能力的提升有一定帮助。
 
-\subsection{Tmp文件夹}
-
-运行编译脚本后，编译所生成的文档皆存于Tmp文件夹内，包括编译得到的PDF文档，其存在是为了保持工作空间的整洁，因为好的心情是很重要的。
-
-\subsection{Style文件夹}
-
-包含ucasthesis文档类的定义文件和配置文件，通过对它们的修改可以实现特定的模版设定。
-
-\begin{enumerate}
-    \item ucasthesis.cls：文档类定义文件，论文的最核心的格式即通过它来定义的。
-    \item ucasthesis.cfg：文档类配置文件，设定如目录显示为“目~录”而非“目录”。
-    \item artratex.sty: 常用宏包及文档设定，如参考文献样式、文献引用样式、页眉页脚设定等。这些功能具有开关选项，常只需在Thesis.tex中进行启用即可，一般无需修改artratex.sty本身。
-    \item artracom.sty：自定义命令以及添加宏包的推荐放置位置。
-\end{enumerate}
-
-\subsection{Tex文件夹}
-
-文件夹内为论文的所有实体内容，正常情况下，这也是\textbf{使用ucasthesis撰写学文论文时，主要关注和修改的一个位置，注：所有文件都必须采用UTF-8编码，否则编译后将出现乱码文本}，详细分类介绍如下：
-
+\section{Darknet源码结构}
+从Joseph Redmon的个人网站或Github上下载得到的Darknet源码包解压后可得到如图所示的文件和文件夹，各文件和文件夹的作用如下\cite{darknet_note}：
 \begin{itemize}
-    \item Frontinfo.tex：为论文中英文封面信息。\textbf{论文封面会根据英文学位名称如Bachelor，Master，Doctor, Postdoctor 自动切换为相应的格式}。
-    \item Frontmatter.tex：为论文前言内容如中英文摘要等。
-    \item Mainmatter.tex：索引需要出现的Chapter。开始写论文时，可以只索引当前章节，以快速编译查看，当论文完成后，再对所有章节进行索引即可。
-    \item Chap{\_}xxx.tex：为论文主体的各章，可根据需要添加和撰写。\textbf{添加新章时，可拷贝一个已有的章文件再重命名，以继承文档的 UTF8 编码}。
-    \item Appendix.tex：为附录内容。
-    \item Backmatter.tex：为发表文章信息和致谢部分等。
+    \item cfg文件夹内是一些模型的架构，每个cfg文件类似于caffe的prototxt文件，通过该文件定义的整个模型的架构；
+    \item data文件夹内放置了一些label文件，如coco9k的类别名等，和一些样例图，主要在训练和测试时使用；
+    \item src文件夹内是最底层的框架定义文件，所有层的定义等最基本的函数全部在该文件夹内，是Darknet框架的源码所在；
+    \item examples文件夹是更为高层的一些函数，如检测函数，识别函数等，这些函数直接调用了底层的函数，是对底层函数的封装；
+    \item include文件夹，顾名思义，存放头文件的地方；
+    \item python文件夹里是使用python对模型的调用方法，基本都在darknet.py中。要实现python的调用，还需要用到darknet的动态库libdarknet.so；
+    \item scripts文件夹中是一些脚本，如下载coco数据集，将voc格式的数据集转换为训练所需格式的脚本等；
+    \item 一系列和功能无关的license文件；
+    \item 本章的重点Makefile文件，用于框架的编译和运行。
 \end{itemize}
 
-\subsection{Img文件夹}
+\section{Darknet的移植}
+\subsection{Linux make和Makefile介绍其二}
+在\ref{subsec:Makefile介绍}节中已经介绍过Makefile的文件结构和Linux make的基本使用方法，在本节中将进一步介绍Makefile文件中的变量定义和计算，为理解Darknet的编译过程打下基础。
 
-用于放置论文中所需要的图类文件，支持格式有：.jpg, .png, .pdf。其中，\verb|ucas_logo.pdf|为国科大校徽。不建议为各章节图片建子目录，即使图片众多，若命名规则合理，图片查询亦是十分方便。
+在Makefile文件中，如果有某些指令和名称比较长或是需要在文件不同位置多次使用，为了保证可读性和修改的方便则需要用类似C语言宏定义的方式，用一些“宏”（更准确地说应该是变量）代表这些指令或名称。Linux make和Makefile即提供了这样的功能，这种功能的存在也使得Makefile被称为“make脚本”\footnote{为啥叫“脚本”？“脚本”的英文是“script”，可以联想两种解释型编程语言：js和python。js全称是“JavaScript”，python的源代码文件也叫“python script”，它们都是以解释器解释脚本文件中源代码的方式运行的。make也可以看作是一个解释型编程语言的解释器，Makefile就是它读入并解释的脚本文件，\ref{subsec:Makefile介绍}节和本节就是在介绍这个编程语言的语法}。这一功能可以概况为如下几种语法：
+\begin{itemize}
+    \item 变量定义：
+    \begin{lstlisting}
+[变量名]=[值]；
+    \end{lstlisting}
+    \item 变量调用：
+    \begin{lstlisting}
+$([变量名])
+    \end{lstlisting}
+    \item 变量修改：
+    \begin{lstlisting}
+[变量名]+=$([变量名])或[值]
+    \end{lstlisting}
+    \begin{lstlisting}
+[变量名]=$([变量名])或[值]+$([变量名])或[值]+...
+    \end{lstlisting}
+    \item 变量比较和if语句：
+    \begin{lstlisting}
+ifeq ($([变量名]), $([变量名])或[值])
+一些操作
+endif
+    \end{lstlisting}
+\end{itemize}
 
-\subsection{Biblio文件夹}
+Makefile中的所有变量均是字符串，变量修改中的“+”表示的就是字符串的连接,变量比较就是字符串的比较；字符串的调用可以在文件的任何地方，Linux make在运行时会自动将Makefile中的变量调用替换为变量对应的字符串\footnote{就像C语言的宏一样}。例如\ref{subsec:编写Makefile}中的Makefile：
+\begin{lstlisting}
+arrAdd:master_arrAdd.o slave_arrAdd.o
+    sw5cc -hybrid master_arrAdd.o slave_arrAdd.o -o arrAdd
+master_arrAdd.o:master_arrAdd.c
+    sw5cc -host -c master_arrAdd.c
+slave_arrAdd.o:slave_arrAdd.c
+    sw5cc -slave -c slave_arrAdd.c
+clean:
+    rm master_arrAdd.o slave_arrAdd.o arrAdd
+run:arrAdd
+    bsub -I -b -q q_sw_expr -n 1 -cgsp 64 ./arrAdd
+\end{lstlisting}
+把其中的输出文件名“arrAdd”、两个.o文件和bsub的运行选项用变量表示，可将Makefile改写如下：
+\begin{lstlisting}
+OUTPUT=arrAdd
+OFILES=master_arrAdd.o slave_arrAdd.o
+OPT=-I -b
+OPT+=-q q_sw_expr
+OPT+=-n 1
+OPT+=-cgsp 64
+$(OUTPUT):$(OFILES)
+    sw5cc -hybrid $(OFILES) -o $(OUTPUT)
+master_arrAdd.o:master_arrAdd.c
+    sw5cc -host -c master_arrAdd.c
+slave_arrAdd.o:slave_arrAdd.c
+    sw5cc -slave -c slave_arrAdd.c
+clean:
+    rm $(OFILES) $(OUTPUT)
+run:$(OUTPUT)
+    bsub $(OPT) ./$(OUTPUT)
+\end{lstlisting}
 
-\begin{enumerate}
-    \item ref.bib：参考文献信息库。
-    \item gbt7714-xxx.bst：文献样式定义文件。由 \href{https://github.com/zepinglee}{zepinglee}  开发，在最新国标的基础上对ucas进行了定制。与文献样式有关的问题，请查阅开发者所提供的文档，并建议适当追踪 \href{https://github.com/CTeX-org/gbt7714-bibtex-style/tree/ucas}{ucas 样式分支}的更新。
-\end{enumerate}
-
-\section{数学公式、图表、参考文献等功能}
+\subsection{Darknet的Makefile}
+官网下载的Darknet源码中的Makefile文件如附录\ref{apdx:Darknet的Makefile}所示，本节将对这个Makefile文件及其所定义的编译过程进行解析。
 
 \subsection{数学公式}
 
