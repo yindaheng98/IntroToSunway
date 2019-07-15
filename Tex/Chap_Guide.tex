@@ -1,6 +1,6 @@
 \chapter{Darknet移植}
-\section{Darknet介绍\cite{darknet13}}
-Darknet是一个开源的C语言神经网络框架，由著名的机器视觉专家Joseph Redmon开发。Darknet性能优异，安装简单，在目标识别领域有广泛应用的YOLO模型\cite{yolov3}的最初版本就是在这个框架下开发的。作为作为“神威 · 太湖之光”并行编程的入门练习，Darknet有如下优点\cite{darknet_note}：
+\section{Darknet介绍}
+Darknet是一个开源的C语言神经网络框架，由著名的机器视觉专家Joseph Redmon开发\cite{darknet13}。Darknet性能优异，安装简单，在目标识别领域有广泛应用的YOLO模型\cite{yolov3}的最初版本就是在这个框架下开发的。作为作为“神威 · 太湖之光”并行编程的入门练习，Darknet有如下优点\cite{darknet_note}：
 \begin{itemize}
     \item 易于安装：在makefile里面选择自己需要的附加项（cuda，cudnn，opencv等）直接make即可；
     \item 没有任何依赖项：整个框架都用C语言进行编写，可以不依赖任何库，连opencv作者都编写了可以对其进行替代的函数；
@@ -33,24 +33,38 @@ Darknet是一个开源的C语言神经网络框架，由著名的机器视觉专
 \begin{itemize}
     \item 变量定义：
     \begin{lstlisting}
-[变量名]=[值]；
+变量名=值；
     \end{lstlisting}
     \item 变量调用：
     \begin{lstlisting}
-$([变量名])
+$(变量名)
     \end{lstlisting}
     \item 变量修改：
     \begin{lstlisting}
-[变量名]+=$([变量名])或[值]
+变量名+=$(变量名)或值
     \end{lstlisting}
     \begin{lstlisting}
-[变量名]=$([变量名])或[值]+$([变量名])或[值]+...
+变量名=$(变量名)或值+$(变量名)或值+...
     \end{lstlisting}
     \item 变量比较和if语句：
     \begin{lstlisting}
-ifeq ($([变量名]), $([变量名])或[值])
-一些操作
+ifeq ($(变量名), $(变量名)或值)
+[一些操作]
 endif
+    \end{lstlisting}
+    \item 内嵌函数：
+    \begin{lstlisting}
+$(函数名 变量1,变量2,...)
+    \end{lstlisting}
+    \item 静态模式：可以将多个任务合并于一个任务定义中，如下任务运行前{\codefont\$@}将被{\codefont 文件路径\%.o}替代、{\codefont\$<}将被{\codefont 文件路径\%.cpp}替代，生成每个.o和每个.cpp一一对应的多个指令：
+    \begin{lstlisting}
+[文件路径]%.o: [文件路径]%.cpp [其他dependences]
+    [一部分指令] $< [一部分指令] $@
+    \end{lstlisting}
+    而下面这种的{\codefont\$@}将被{\codefont target}替代、{\codefont\$\^{}}被{\codefont dependences}替代，但没有上面那种多重替代的效果：
+    \begin{lstlisting}
+[target]: [dependences]
+    [一部分指令] $^ [一部分指令] $@
     \end{lstlisting}
 \end{itemize}
 
@@ -63,32 +77,112 @@ master_arrAdd.o:master_arrAdd.c
 slave_arrAdd.o:slave_arrAdd.c
     sw5cc -slave -c slave_arrAdd.c
 clean:
-    rm master_arrAdd.o slave_arrAdd.o arrAdd
+    -rm master_arrAdd.o slave_arrAdd.o arrAdd
 run:arrAdd
     bsub -I -b -q q_sw_expr -n 1 -cgsp 64 ./arrAdd
 \end{lstlisting}
 把其中的输出文件名“arrAdd”、两个.o文件和bsub的运行选项用变量表示，可将Makefile改写如下：
 \begin{lstlisting}
-OUTPUT=arrAdd
-OFILES=master_arrAdd.o slave_arrAdd.o
+EXEC=arrAdd
+OBJS=master_arrAdd.o slave_arrAdd.o
+
 OPT=-I -b
 OPT+=-q q_sw_expr
 OPT+=-n 1
 OPT+=-cgsp 64
-$(OUTPUT):$(OFILES)
-    sw5cc -hybrid $(OFILES) -o $(OUTPUT)
+
+$(EXEC):$(OBJS)
+    sw5cc -hybrid $(OBJS) -o $(EXEC)
 master_arrAdd.o:master_arrAdd.c
     sw5cc -host -c master_arrAdd.c
 slave_arrAdd.o:slave_arrAdd.c
     sw5cc -slave -c slave_arrAdd.c
 clean:
-    rm $(OFILES) $(OUTPUT)
-run:$(OUTPUT)
-    bsub $(OPT) ./$(OUTPUT)
+    -rm $(OBJS) $(EXEC)
+run:$(EXEC)
+    bsub $(OPT) ./$(EXEC)
 \end{lstlisting}
+
+静态模式语法可以以一个任务定义同时定义多个任务，例如当上面的Makefile要编译多个主核和从核源文件时，可以用内嵌函数和静态模式语法进一步缩写：
+\begin{lstlisting}
+MASTER=master/
+SLAVE=slave/
+OBJDIR=obj/
+
+EXEC=arrAdd
+OBJ=master_arrAdd1.o master_arrAdd2.o slave_arrAdd1.o slave_arrAdd2.o
+OBJS=$(addprefix $(OBJDIR), $(OBJ))
+
+OPT=-I -b
+OPT+=-q q_sw_expr
+OPT+=-n 1
+OPT+=-cgsp 64
+
+$(EXEC):$(OBJS)
+    sw5cc -hybrid $^ -o $@
+$(OUTDIR)%.o:$(MASTER)%.c
+    sw5cc -host -c $< -o $@
+$(OUTDIR)%.o:$(SLAVE)%.c
+    sw5cc -slave -c $< -o $@
+clean:
+    -rm $(OBJS) $(OUTPUT)
+run:$(EXEC)
+    bsub $(OPT) ./$@
+\end{lstlisting}
+在此Makefile目录下运行Linux make时，行16$\sim$19的两个静态模式语法会使得make从MASTER变量和SLAVE变量所指目录下找到所有.c文件编译后放入OUTDIR所指目录中，即将多个任务用一个任务完成定义。在大型项目中善用此方法可以大大减少Makefile文件的长度，使项目更易于维护。
 
 \subsection{Darknet的Makefile}
 官网下载的Darknet源码中的Makefile文件如附录\ref{apdx:Darknet的Makefile}所示，本节将对这个Makefile文件及其所定义的编译过程进行解析。
+
+\subsubsection{变量定义}
+Makefile文件1$\sim$30行是变量的定义，其各部分作用如下：
+\begin{itemize}
+    \item 行1$\sim$5：整体的编译设定。指定编译过程中是否包含GPU、CUDNN、OpenCV、OpenMP和DEBUG模式。这些选项会在第32$\sim$59行被一系列ifeq调用，根据其值改变编译选项；
+    \item 行7$\sim$12：NVCC的编译选项。这个变量在第92行编译.cu文件时调用。NVCC是Nvidia C Compiler，编译CUDA的.cu文件的编译器，这里的这些编译选项表示编译的目标设备的算力\footnote{对于不同算力的Nvidia卡NVCC有不同的优化策略}；
+    \item 行16$\sim$20：SLIB和ALIB是生成的链接库的.so和.a文件名称、EXEC是生成的可执行文件的名称、OBJDIR是中间文件的存储路径，它们都在后面的编译过程中被调用。VPATH是Makefile的一个特殊变量，VPATH中指代的目录下的文件在后面的过程中不需要再输完整路径\footnote{就像Windows和Linux里面的环境变量}，多个目录以冒号分隔。VPATH实际发挥作用的地方是行85$\sim$92三个静态模式语法中没有路径的.c、.cpp、.cu源文件；
+    \item 行22$\sim$30：CC、CPP、NVCC、AR都是GCC里的编译器，ARFLAGS、OPTS、LDFLAGS、COMMON、CFLAGS都是这些编译器的编译选项，这些变量也都在后面的编译过程中被调用。
+\end{itemize}
+
+\subsubsection{编译选项的设置}
+Makefile文件32$\sim$73行是编译选项的设置，其主要作用有二：
+\begin{itemize}
+    \item 用ifeq根据行1$\sim$5定义的整体编译设定修改行22$\sim$30定义的编译选项；
+    \item 确定输出文件的文件位置，以供make检查文件更新使用（行68和69的内嵌函数addprefix是加前缀，行70的\$(wildcard src/*.h)是返回src目录下的所有.h文件路径）。这些文件位置都会在后面的编译过程被调用。
+\end{itemize}
+
+\subsubsection{编译任务}
+从行76开始的所有部分均是和编译相关的任务定义。其各部分作用如下：
+\begin{itemize}
+    \item 行72：默认make任务，生成obj、backup、results三个目录（行94$\sim$99的任务），生成静态链接库和动态链接库（行79$\sim$83 ALIB和SLIB变量值对应的任务），生成可执行文件（EXEC变量值对应的任务）；
+    \item 行76$\sim$77：生成可执行文件。该任务依赖于obj目录下的一系列.o文件（变量EXECOBJ）和静态链接库（变量ALIB）；
+    \item 行79$\sim$83：静态模式语法，用obj目录下的一系列.o文件（变量OBJS）生成静态链接库和动态链接库；
+    \item 行85$\sim$92：静态模式语法，用源代码生成obj目录下一系列.o文件；
+    \item 行94$\sim$104：编译相关的其他任务。.PHONY: clean使clean任务必被执行。
+\end{itemize}
+
+\subsection{开始移植Darknet}
+做了这么多前期学习，终于可以正式开始移植Darknet了。但是有了前面那些分析感觉移植Darknet的这一节没啥好讲的了。移植主要是改Makefile文件，这里简单记录一下我改了哪吧。读者请自己下载Darknet在神威上编译，按照编译错误信息一步步进行修改，下面这个修改过程也是对着错误信息一步步出来的，仅供参考。
+
+\subsubsection{Makefile文件修改}
+\begin{enumerate}
+    \item 编译器
+    首先要修改的肯定是编译器。要把原来的C语言编译器（变量CC）和C++编译器（变量CPP）的值改成神威里的编译器{\codefont sw5cc}和{\codefont sw5CC}；
+    \item 编译选项
+    其次是要改编译选项（变量CFLAGS）。原来的一些编译选项在{\codefont sw5cc}里面是不支持的，然后因为目前只是移植所以编译选项设置为{\codefont -host}全部在主核编译运行；
+    \item 连接选项：
+    在连接任务中，sw5cc连接时要加上{\codefont -hybrid}选项；
+    \item 其他修改
+    \begin{itemize}
+        \item 生成动态链接库有点问题，目前无法解决，故先删去生成动态链接库的任务；
+        \item 为了之后方便优化和维护继续往Makefile里加东西时不会和原来不支持的编译模式弄混，最好把所有神威系统不支持的编译模式删掉，包括CUDA、OpenMP和OpenCV编译，只保留没有任何依赖的普通模式和debug编译模式。
+    \end{itemize}
+\end{enumerate}
+
+\subsubsection{源代码文件修改}
+\begin{enumerate}
+    \item include/darknet.h
+    这个文件在编译时报类型重定义错误，原因是里面的network和layer类型嵌套方式的问题，改成能正常编译的struct嵌套就行了。
+\end{enumerate}
 
 \subsection{数学公式}
 

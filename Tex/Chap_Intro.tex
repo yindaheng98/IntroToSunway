@@ -261,7 +261,7 @@ master_arrAdd.o:master_arrAdd.c
 slave_arrAdd.o:slave_arrAdd.c
   sw5cc -slave -c slave_arrAdd.c
 clean:
-  rm master_arrAdd.o slave_arrAdd.o arrAdd
+  -rm master_arrAdd.o slave_arrAdd.o arrAdd
 run:arrAdd
   bsub -I -b -q q_sw_expr -n 1 -cgsp 64 ./arrAdd
 \end{lstlisting}
