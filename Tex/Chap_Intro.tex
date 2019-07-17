@@ -6,74 +6,74 @@
 
 \subsection{登录Sunway系统SSL VPN}
 \begin{enumerate}
-    \item 使用IE浏览器\footnote{亲测Edge和Chrome在第一次登录时无法下载EasyConnect工具，卡在加载界面}进入神威·太湖之光官网www.nsccwx.cn；
-    \item 在右上角“登录”处选择一个运营商进行登录（图\ref{fig:登录步骤1}）；
-    \item 在弹出的警告页面\footnote{截至本章作成日2018年12月1日，太湖之光的官方网站服务器在使用自主生成的SSL证书进行https连接，这类非信任机构生成的证书会被现在的浏览器识别为不安全}中选择“详细信息”$\rightarrow$“转到此页面”（图\ref{fig:登录步骤2}）；
-    \item 在登录界面输入俱乐部下发的VPN用户名密码进行登录（图\ref{fig:登录步骤3}）；
-    \item 第一次登录完成后浏览器会自动下载EasyConnect工具，此工具为后续登录使用（图\ref{fig:登录步骤4}和图\ref{fig:登录步骤5}）。
+	\item 使用IE浏览器\footnote{亲测Edge和Chrome在第一次登录时无法下载EasyConnect工具，卡在加载界面}进入神威·太湖之光官网www.nsccwx.cn；
+	\item 在右上角“登录”处选择一个运营商进行登录（图\ref{fig:登录步骤1}）；
+	\item 在弹出的警告页面\footnote{截至本章作成日2018年12月1日，太湖之光的官方网站服务器在使用自主生成的SSL证书进行https连接，这类非信任机构生成的证书会被现在的浏览器识别为不安全}中选择“详细信息”$\rightarrow$“转到此页面”（图\ref{fig:登录步骤2}）；
+	\item 在登录界面输入俱乐部下发的VPN用户名密码进行登录（图\ref{fig:登录步骤3}）；
+	\item 第一次登录完成后浏览器会自动下载EasyConnect工具，此工具为后续登录使用（图\ref{fig:登录步骤4}和图\ref{fig:登录步骤5}）。
 \end{enumerate}
 
 再次登录时，打开第一次登录完成后自动下载的EasyConnect工具输入俱乐部下发的VPN用户名密码即可。
 
 \subsection{SSH登录超算系统}
 \begin{enumerate}
-    \item 登录VPN；
-    \item 在弹出的页面找到可用资源的IP地址（图\ref{fig:登录步骤6}）；
-    \item 在命令行窗口输入“ssh [俱乐部下发的用户名]@[可用资源的IP地址]”命令进行登录\footnote{这里的用户名是SSH用户名}，登录时会提示输入密码\footnote{多次登录有时会出现WARNING和登录失败，大部分情况下这都是神威系统为了安全对SSH登录验证的公钥进行定时修改所致（猜测）。这时只要删除用户目录下的C:/用户/用户名/.ssh/known\_hosts文件重新登录SSH即可（这个文件记录了所有登录过的SSH服务器的公钥，再次登录时会进行公钥比对，如果不符则登录失败）}，此处密码为SSH登录密码（图\ref{fig:登录步骤7}）；
-    \item 出现bash界面说明登录成功（图\ref{fig:登录步骤8}）。
+	\item 登录VPN；
+	\item 在弹出的页面找到可用资源的IP地址（图\ref{fig:登录步骤6}）；
+	\item 在命令行窗口输入“ssh [俱乐部下发的用户名]@[可用资源的IP地址]”命令进行登录\footnote{这里的用户名是SSH用户名}，登录时会提示输入密码\footnote{多次登录有时会出现WARNING和登录失败，大部分情况下这都是神威系统为了安全对SSH登录验证的公钥进行定时修改所致（猜测）。这时只要删除用户目录下的C:/用户/用户名/.ssh/known\_hosts文件重新登录SSH即可（这个文件记录了所有登录过的SSH服务器的公钥，再次登录时会进行公钥比对，如果不符则登录失败）}，此处密码为SSH登录密码（图\ref{fig:登录步骤7}）；
+	\item 出现bash界面说明登录成功（图\ref{fig:登录步骤8}）。
 \end{enumerate}
 
 \begin{figure}[!htbp]
-    \centering
-    \begin{subfigure}[b]{0.49\textwidth}
-      \includegraphics[width=\textwidth]{Login/1.png}
-      \caption{官网主页}
-      \label{fig:登录步骤1}
-    \end{subfigure}%
-    ~% add desired spacing
-    \begin{subfigure}[b]{0.49\textwidth}
-      \includegraphics[width=\textwidth]{Login/2.png}
-      \caption{进入登录页面}
-      \label{fig:登录步骤2}
-    \end{subfigure}
-    \\% line break
-    \begin{subfigure}[b]{0.49\textwidth}
-      \includegraphics[width=\textwidth]{Login/3.png}
-      \caption{登录VPN}
-      \label{fig:登录步骤3}
-    \end{subfigure}%
-    ~% add desired spacing
-    \begin{subfigure}[b]{0.49\textwidth}
-      \includegraphics[width=\textwidth]{Login/4.png}
-      \caption{下载EasyConnect}
-      \label{fig:登录步骤4}
-    \end{subfigure}
-    \\% line break
-    \begin{subfigure}[b]{0.49\textwidth}
-      \includegraphics[width=\textwidth]{Login/5.png}
-      \caption{安装EasyConnect}
-      \label{fig:登录步骤5}
-    \end{subfigure}%
-    ~% add desired spacing
-    \begin{subfigure}[b]{0.49\textwidth}
-      \includegraphics[width=\textwidth]{Login/6.png}
-      \caption{找可用资源}
-      \label{fig:登录步骤6}
-    \end{subfigure}
-    \\% line break
-    \begin{subfigure}[b]{0.49\textwidth}
-      \includegraphics[width=\textwidth]{Login/7.png}
-      \caption{用可用资源IP登录SSH}
-      \label{fig:登录步骤7}
-    \end{subfigure}%
-    ~% add desired spacing
-    \begin{subfigure}[b]{0.49\textwidth}
-      \includegraphics[width=\textwidth]{Login/8.png}
-      \caption{登录成功}
-      \label{fig:登录步骤8}
-    \end{subfigure}
-    \caption{超算系统登录流程}
-    \label{fig:oaspl}
+	\centering
+	\begin{subfigure}[b]{0.49\textwidth}
+		\includegraphics[width=\textwidth]{Login/1.png}
+		\caption{官网主页}
+		\label{fig:登录步骤1}
+	\end{subfigure}%
+	~% add desired spacing
+	\begin{subfigure}[b]{0.49\textwidth}
+		\includegraphics[width=\textwidth]{Login/2.png}
+		\caption{进入登录页面}
+		\label{fig:登录步骤2}
+	\end{subfigure}
+	\\% line break
+	\begin{subfigure}[b]{0.49\textwidth}
+		\includegraphics[width=\textwidth]{Login/3.png}
+		\caption{登录VPN}
+		\label{fig:登录步骤3}
+	\end{subfigure}%
+	~% add desired spacing
+	\begin{subfigure}[b]{0.49\textwidth}
+		\includegraphics[width=\textwidth]{Login/4.png}
+		\caption{下载EasyConnect}
+		\label{fig:登录步骤4}
+	\end{subfigure}
+	\\% line break
+	\begin{subfigure}[b]{0.49\textwidth}
+		\includegraphics[width=\textwidth]{Login/5.png}
+		\caption{安装EasyConnect}
+		\label{fig:登录步骤5}
+	\end{subfigure}%
+	~% add desired spacing
+	\begin{subfigure}[b]{0.49\textwidth}
+		\includegraphics[width=\textwidth]{Login/6.png}
+		\caption{找可用资源}
+		\label{fig:登录步骤6}
+	\end{subfigure}
+	\\% line break
+	\begin{subfigure}[b]{0.49\textwidth}
+		\includegraphics[width=\textwidth]{Login/7.png}
+		\caption{用可用资源IP登录SSH}
+		\label{fig:登录步骤7}
+	\end{subfigure}%
+	~% add desired spacing
+	\begin{subfigure}[b]{0.49\textwidth}
+		\includegraphics[width=\textwidth]{Login/8.png}
+		\caption{登录成功}
+		\label{fig:登录步骤8}
+	\end{subfigure}
+	\caption{超算系统登录流程}
+	\label{fig:oaspl}
 \end{figure}
 
 \section{第一个程序：矩阵相加}
@@ -96,56 +96,61 @@
 \subsubsection{在主核中调用的Athread函数}
 \begin{enumerate}
 	\item athread\_init()核组初始化，在所有athread操作之前都要进行调用；
-	\item athread\_set\_num\_threads()设置下一次并行操作启动的线程总数，如果不设置此项值则下一次并行操作(athread\_spawn)启动64个线程；
+	\item athread\_set\_num\_threads([要设置的线程总数])设置下一次并行操作启动的线程总数，如果不设置此项值则下一次并行操作(athread\_spawn)启动64个线程；
 	\item athread\_spawn([函数指针],[传入参数])在从核上启动并行线程，[函数指针]为指向从核函数入口的指针(从核函数名)，且该指针需要在文件开头使用一个Athread库中的宏“extern SLAVE\_FUN(从核函数名)()”进行声明；[传入参数]为向每个从核函数传递的实参该参数会在运行时传递到每个并行从核函数线程中；
 	\item athread\_join()等待所有从核线程结束，程序执行到此函数时会阻塞直到所有从核线程结束才会执行下一步；
-	\item athread\_halt()关闭线程组流水线，在所有并行操作完成之后才能调用此函数，在程序结束时调用，调用后运算核心将无法在本进程中再次使用。
+	\item athread\_halt()关闭线程组流水线，在所有并行操作完成之后才能调用此函数，在程序结束时调用，调用后运算核心将无法在本进程中再次使用；
+	\item gettimeofday([变量指针],NULL)：在本例程中用此函数获取程序运行时间统计并行算法性能。
 \end{enumerate}
 
 \subsubsection{在从核中调用的Athread函数}
 \begin{enumerate}
 	\item athread\_get\_id()获取线程逻辑标号，一般在从核程序中通过此函数的值判断应该从主存储的哪个位置取数据；
 	\item athread\_get([传输模式],[源地址],[目的地址],[数据量],[回答字地址],[],[],[])通过DMA(见注\ref{footnote:DMA})方法从主存中读取数据写入从核局部存储。各形参含义为：
-	\begin{itemize}
-		\item 传输模式：DMA传输命令模式，本例程中只涉及使用PE\_MODE；
-        \item 源地址：要传输的数据在主核中的地址(在主核程序中的变量名)。对于数组形式的数据，此处填数组变量的首地址，就像下面这样\footnote{这里的取数位置即是从核函数要从何处取数的标志(见注\ref{footnote:取数据说明})，该值一般由athread\_get\_id()获取到的线程逻辑标号计算得出}。多维数组的取址方法以此类推。
-		\begin{lstlisting}
+	      \begin{itemize}
+		      \item 传输模式：DMA传输命令模式，本例程中只涉及使用PE\_MODE；
+		      \item 源地址：要传输的数据在主核中的地址(在主核程序中的变量名)。对于数组形式的数据，此处填数组变量的首地址，就像下面这样\footnote{这里的取数位置即是从核函数要从何处取数的标志(见注\ref{footnote:取数据说明})，该值一般由athread\_get\_id()获取到的线程逻辑标号计算得出}。多维数组的取址方法以此类推。
+		            \begin{lstlisting}
 &源数组名[取数位置]//一维数组首地址位置
 &源数组名[取数位置1][取数位置2]//二维数组首地址位置
         \end{lstlisting}
-        上面写出的源数组名数组名需要在从核程序开头进行“extern”声明，如下所示。
-		\begin{lstlisting}
+		            上面写出的源数组名数组名需要在从核程序开头进行“extern”声明，如下所示。
+		            \begin{lstlisting}
 extern 数据类型 源数组名;//文件开头声明主核中的某个数组
 		\end{lstlisting}
-		\item 目的地址：从主存中取得的数据放入局部存储的哪个地址(变量)中。对于数组形式的数据其写法和源地址相同，且数组名需要在从核函数文件开头进行“\_\_thread\_local”声明，如下所示。
-		\begin{lstlisting}
+		      \item 目的地址：从主存中取得的数据放入局部存储的哪个地址(变量)中。对于数组形式的数据其写法和源地址相同，且数组名需要在从核函数文件开头进行“\_\_thread\_local”声明，如下所示。
+		            \begin{lstlisting}
 extern 数据类型 源数组名;//文件开头声明主核中的某个数组
 		\end{lstlisting}
-		\item 数据量：从源地址开始读取多少\textbf{字节}数据到局部存储(目的地址)中。对于数组形式的数据，此参数的值为[要读多少个数]*[此数组的数据类型占多少字节]\footnote{实测在太湖之光的编译系统中，int型和float型占4个字节，long型和double型占8个字节}。
-		\item 回答字地址：当athread\_get数据传输完成时，回答字地址中的值加1。多个athread\_get同时运行可以共用一个回答字，每个athread\_get运行结束时都会使回答字地址中的值加1。一般在等待athread\_get传输完成的地方会有“while([回答字]!=[共用此回答字的athread\_get函数个数]);”。回答字变量在从核函数文件开头以“\_\_thread\_local volatile”声明。
-		\item 本例程不涉及最后三个参数。
-	\end{itemize}
+		      \item 数据量：从源地址开始读取多少\textbf{字节}数据到局部存储(目的地址)中。对于数组形式的数据，此参数的值为[要读多少个数]*[此数组的数据类型占多少字节]\footnote{实测在太湖之光的编译系统中，int型和float型占4个字节，long型和double型占8个字节}。
+		      \item 回答字地址：当athread\_get数据传输完成时，回答字地址中的值加1。多个athread\_get同时运行可以共用一个回答字，每个athread\_get运行结束时都会使回答字地址中的值加1。一般在等待athread\_get传输完成的地方会有“while([回答字]!=[共用此回答字的athread\_get函数个数]);”。回答字变量在从核函数文件开头以“\_\_thread\_local volatile”声明。
+		      \item 最后三个参数和DMA主存跨步有关，本例程不涉及。
+	      \end{itemize}
 \end{enumerate}
 
 
 \subsection{并行编程思路}\label{subsec:并行编程思路}
 并行编程程序分主核和从核两个程序流程，请理解上文所述的各函数的作用并理解下列流程后自行编写程序。参考程序见附录\ref{apdx:第一个程序}。
-\newline 主核程序：
+
+主核程序：主核程序中先用传统方法求一下矩阵和统计运行时间，和下面的并行优化后的时间对比，感受一下并行加速的效果。
 \begin{enumerate}
-    \item 生成两个64x2048矩阵；
-    \item athread\_init()初始化；
-    \item athread\_spawn()启动64个从核线程，每个线程处理每个64X2048矩阵中的2048个数；
-    \item athread\_join()等待线程全部结束；
-    \item athread\_halt()关闭线程流水线；
-    \item 输出结果，退出程序。
+	\item 生成两个64x2048矩阵；
+	\item athread\_init()初始化；
+	\item athread\_spawn()启动64个从核线程，每个线程处理每个64X2048矩阵中的2048个数；
+	\item athread\_join()等待线程全部结束；
+	\item athread\_halt()关闭线程流水线；
+	\item 输出结果，退出程序。
 \end{enumerate}
+
+在上述操作中的开头和结尾调用gettimeofday()获取当前时间相减得到并行程序的运行时间。
+
 从核程序：
 \begin{enumerate}
-    \item athread\_get\_id()获取线程逻辑标号；
-    \item athread\_get()根据线程逻辑标号从主核程序变量中取得要用的数据，每个线程取在两个64x2048矩阵中各取2048个数；
-    \item 计算相加结果；
-    \item athread\_put()将结果写回主核程序变量中；
-    \item 退出程序。
+	\item athread\_get\_id()获取线程逻辑标号；
+	\item athread\_get()根据线程逻辑标号从主核程序变量中取得要用的数据，每个线程取在两个64x2048矩阵中各取2048个数；
+	\item 计算相加结果；
+	\item athread\_put()将结果写回主核程序变量中；
+	\item 退出程序。
 \end{enumerate}
 
 \section{程序的编译}
@@ -172,23 +177,23 @@ sw5cc -hybrid [选项] 主核文件名.o 从核文件名.o
 \subsection{用命令行编译程序}\label{subsec:用命令行编译程序}
 假设在\ref{subsec:并行编程思路}节编写的主核程序源文件名“master\_arrAdd.c”、从核程序源文件名“slave\_arrAdd.c”，则可以输入下面这三条指令对源文件进行编译和链接：
 \begin{enumerate}
-  \item 编译主核，-c选项表示为每个源文件生成一个.o文件但不进行链接
-\begin{lstlisting}
+	\item 编译主核，-c选项表示为每个源文件生成一个.o文件但不进行链接
+	      \begin{lstlisting}
 sw5cc -host -c master_arrAdd.c
 \end{lstlisting}
-  \item 编译从核
-\begin{lstlisting}
+	\item 编译从核
+	      \begin{lstlisting}
 sw5cc -slave -c slave_arrAdd.c
 \end{lstlisting}
-  \item 链接，-o arrAdd选项表示输出的可执行文件名为“arrAdd”
-\begin{lstlisting}
+	\item 链接，-o arrAdd选项表示输出的可执行文件名为“arrAdd”
+	      \begin{lstlisting}
 sw5cc -hybrid master_arrAdd.o slave_arrAdd.o -o arrAdd
 \end{lstlisting}
 \end{enumerate}
 
 编译完成后即可在当前目录下看到一个可执行文件“arrAdd”。接下来介绍运行这个可执行文件的方法。
 
-\section{程序的运行}
+\section{程序的运行}\label{sec:程序的运行}
 和上一节介绍的编译环境一样，神威系统的运行也分高速计算系统运行和辅助计算系统运行两种，这里也只介绍程序在高速计算系统中的运行，主要内容来自《优化手册》2.6节“作业提交”。
 
 \subsection{Sunway程序运行简介}
@@ -205,12 +210,12 @@ bsub -I -b -q q_sw_expr -n 1 -cgsp 64 ./arrAdd
 \end{lstlisting}
 指令选项解释：
 \begin{itemize}
-  \item -I：使作业输出在当前窗口；
-  \item -q q\_sw\_expr：将作业提交到q\_sw\_expr计算队列；
-  \item -b：指定从核栈位于局部存储，该选项使得从核程序先全部读入从核局部再运行，可以减少主从核数据传输的次数，对于并行计算的速度提升非常重要；
-  \item -n 1：指定程序要用的核组个数为1；
-  \item -cgsp 64：指定每个核组内要用的从核个数为64，由于一个SW26010一个核组只有64个从核，因此该值不能大于64。该选项即影响程序中athread\_spawn()生成的从核线程的个数；
-  \item ./arrAdd：要执行的可执行文件位置。
+	\item -I：使作业输出在当前窗口；
+	\item -q q\_sw\_expr：将作业提交到q\_sw\_expr计算队列；
+	\item -b：指定从核栈位于局部存储，该选项使得从核程序先全部读入从核局部再运行，可以减少主从核数据传输的次数，对于并行计算的速度提升非常重要；
+	\item -n 1：指定程序要用的核组个数为1；
+	\item -cgsp 64：指定每个核组内要用的从核个数为64，由于一个SW26010一个核组只有64个从核，因此该值不能大于64。该选项即影响程序中athread\_spawn()生成的从核线程的个数；
+	\item ./arrAdd：要执行的可执行文件位置。
 \end{itemize}
 
 若使用附录\ref{apdx:第一个程序}中的程序，在程序执行完成后可得到并行和非并行计算的结果与时间对比。
@@ -219,9 +224,9 @@ bsub -I -b -q q_sw_expr -n 1 -cgsp 64 ./arrAdd
 \subsection{Linux make和Makefile介绍其一}\label{subsec:Makefile介绍}
 在装有GNU Make的Linux系统上，make是一条可执行指令，该指令读入一个名为Makefile的文件，通过执行这个文件中指定的指令完成程序的编译、安装和运行。该指令有如下功能：
 \begin{enumerate}
-  \item 使最终用户可以在不知道构建细节的情况下构建和安装软件，构建细节都记录在所提供的Makefile中，用户只需要在Makefile文件所在目录下键入make指令即可；
-  \item make可以通过读取和记录文件修改时间自动知道那些文件需要更新（重新编译），并且它也会通过Makefile中所记录的文件依赖关系自动决定文件更新的适当顺序，使得相关的文件一并更新；
-  \item make本质上只是一个系统指令的执行器，只要是能通过键入指令完成构建和运行的程序都可以通过make完成构建和运行，因此make的使用不限于任何一种特定的语言。对于程序中任何一种非源文件， makefile文件中可以指定shell指令去生成它。shell 指令可以执行编译器生成目标文件，执行链接器生成可执行文件，执行ar更新库文件，执行TeX（一个文本排版软件）或Makeinfo去格式化文档等。
+	\item 使最终用户可以在不知道构建细节的情况下构建和安装软件，构建细节都记录在所提供的Makefile中，用户只需要在Makefile文件所在目录下键入make指令即可；
+	\item make可以通过读取和记录文件修改时间自动知道那些文件需要更新（重新编译），并且它也会通过Makefile中所记录的文件依赖关系自动决定文件更新的适当顺序，使得相关的文件一并更新；
+	\item make本质上只是一个系统指令的执行器，只要是能通过键入指令完成构建和运行的程序都可以通过make完成构建和运行，因此make的使用不限于任何一种特定的语言。对于程序中任何一种非源文件， makefile文件中可以指定shell指令去生成它。shell 指令可以执行编译器生成目标文件，执行链接器生成可执行文件，执行ar更新库文件，执行TeX（一个文本排版软件）或Makeinfo去格式化文档等。
 \end{enumerate}
 \subsection{Makefile的格式}
 Makefile文件的语法可以看作是一系列的任务定义，定义任务的文本格式非常简单：
@@ -233,22 +238,22 @@ target:[dependencies \dots]
 \end{lstlisting}
 其各部分的用处如下：
 \begin{itemize}
-  \item target：定义任务名称。每个Malefile文件都包含有多个任务，每个任务都有一个唯一的target指定这个任务的名称。任务的名称只是这个任务的一个代号，但是为了可读性，任务的编写和命名规则一般有如下约定：
-  \begin{itemize}
-    \item 将生成中间文件、编译、清理生成文件、运行等任务分开编写；
-    \item 如果这个任务的作用是生成一个文件，则任务名是要生成的文件名；
-    \item 如果这个任务的作用是编译整个工程，则任务名是“build”或是最终的可执行文件名；
-    \item 如果这个任务是清理生成文件，则任务名为“clean”；
-    \item 如果这个任务是运行，则任务名为“run”。
-  \end{itemize}
-  当在Malefile中定义了一个任务后，可以使用“make target”指令Malefile中定义的某个特定任务；而若直接键入“make”，则默认运行Makefile中定义的第一个任务。
-  \item [dependencies \dots]：依赖项。该项指定当前任务与哪些文件有关或是在哪些任务完成之后才能运行，dependencies是文件名称或其他任务的任务名称（target），多个名称以空格分隔。在make指令调用此任务时，make程序对dependencies中的每个名称的处理如下：
-  \begin{enumerate}
-    \item 如果有该名称对应的文件，则检查文件的修改日期，将其与上一次执行时存储的修改日期对比，若不同则说明文件被修改。如果在dependencies对应的文件中检测到任何一个文件被修改，则先执行该名称对应的任务（如果有的话，否则只执行本任务\footnote{想想看这就是以要生成的文件名作为任务名的好处}）再执行本任务；
-    \item 如果有该名称对应的任务，则检查该任务的dependencies，规则同上。
-  \end{enumerate}
-  递归式地运行以上两步，直到检查的任务中没有名称对应任务，从而能使得一个文件被修改时执行且只执行相关的任务进行中间文件和输出文件的编译更新；
-  \item command：完成任务要执行的指令。该项指定当前任务要完成哪些指令，每个指令前必须要以tab缩进，指令间以换行分隔。当调用一个任务时，该任务下定义的指令将被按顺序执行。
+	\item target：定义任务名称。每个Malefile文件都包含有多个任务，每个任务都有一个唯一的target指定这个任务的名称。任务的名称只是这个任务的一个代号，但是为了可读性，任务的编写和命名规则一般有如下约定：
+	      \begin{itemize}
+		      \item 将生成中间文件、编译、清理生成文件、运行等任务分开编写；
+		      \item 如果这个任务的作用是生成一个文件，则任务名是要生成的文件名；
+		      \item 如果这个任务的作用是编译整个工程，则任务名是“build”或是最终的可执行文件名；
+		      \item 如果这个任务是清理生成文件，则任务名为“clean”；
+		      \item 如果这个任务是运行，则任务名为“run”。
+	      \end{itemize}
+	      当在Malefile中定义了一个任务后，可以使用“make target”指令Malefile中定义的某个特定任务；而若直接键入“make”，则默认运行Makefile中定义的第一个任务。
+	\item [dependencies \dots]：依赖项。该项指定当前任务与哪些文件有关或是在哪些任务完成之后才能运行，dependencies是文件名称或其他任务的任务名称（target），多个名称以空格分隔。在make指令调用此任务时，make程序对dependencies中的每个名称的处理如下：
+	      \begin{enumerate}
+		      \item 如果有该名称对应的文件，则检查文件的修改日期，将其与上一次执行时存储的修改日期对比，若不同则说明文件被修改。如果在dependencies对应的文件中检测到任何一个文件被修改，则先执行该名称对应的任务（如果有的话，否则只执行本任务\footnote{想想看这就是以要生成的文件名作为任务名的好处}）再执行本任务；
+		      \item 如果有该名称对应的任务，则检查该任务的dependencies，规则同上。
+	      \end{enumerate}
+	      递归式地运行以上两步，直到检查的任务中没有名称对应任务，从而能使得一个文件被修改时执行且只执行相关的任务进行中间文件和输出文件的编译更新；
+	\item command：完成任务要执行的指令。该项指定当前任务要完成哪些指令，每个指令前必须要以tab缩进，指令间以换行分隔。当调用一个任务时，该任务下定义的指令将被按顺序执行。
 \end{itemize}
 
 \subsection{编写Makefile}\label{subsec:编写Makefile}
@@ -273,14 +278,14 @@ run:arrAdd
 本章主要介绍了在神威系统编写程序的流程和必须要知道的一些基本操作，内容可大致概括为图\ref{fig:Chap_Intro}。
 
 \begin{figure}[!htbp]
-  \centering
-  \includegraphics[width=\textwidth]{Chap_Intro}
-  \caption{第\thechapter{}章的知识点概括}
-  \label{fig:Chap_Intro}
+	\centering
+	\includegraphics[width=\textwidth]{Chap_Intro}
+	\caption{第\thechapter{}章的知识点概括}
+	\label{fig:Chap_Intro}
 \end{figure}
 
 \subsection{练习}
 \begin{itemize}
-  \item 用Athread实现并行的矩阵减法；
-  \item 用Athread实现并行的矩阵乘法。
+	\item 用Athread实现并行的矩阵减法，并与无并行的矩阵减法比较运行时间；
+	\item 用Athread实现并行的矩阵乘法，并与无并行的矩阵乘法比较运行时间。
 \end{itemize}
