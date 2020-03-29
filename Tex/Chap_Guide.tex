@@ -56,12 +56,12 @@ endif
 	      \begin{lstlisting}
 $(函数名 变量1,变量2,...)
     \end{lstlisting}
-	\item 静态模式：可以将多个任务合并于一个任务定义中，如下任务运行前{\codefont\$@}将被{\codefont 文件路径\%.o}替代、{\codefont\$<}将被{\codefont 文件路径\%.cpp}替代，生成每个.o和每个.cpp一一对应的多个指令：
+	\item 静态模式：可以将多个任务合并于一个任务定义中，如下任务运行前{\codefont\$@}将被\code{文件路径\%.o}替代、{\codefont\$<}将被\code{文件路径\%.cpp}替代，生成每个.o和每个.cpp一一对应的多个指令：
 	      \begin{lstlisting}
 [文件路径]%.o: [文件路径]%.cpp [其他dependences]
     [一部分指令] $< [一部分指令] $@
     \end{lstlisting}
-	      而下面这种的{\codefont\$@}将被{\codefont target}替代、{\codefont\$\^{}}被{\codefont dependences}替代，但没有上面那种多重替代的效果：
+	      而下面这种的{\codefont\$@}将被\code{target}替代、{\codefont\$\^{}}被\code{dependences}替代，但没有上面那种多重替代的效果：
 	      \begin{lstlisting}
 [target]: [dependences]
     [一部分指令] $^ [一部分指令] $@
@@ -166,11 +166,11 @@ Makefile文件32$\sim$73行是编译选项的设置，其主要作用有二：
 \subsubsection{Makefile文件修改}
 \begin{enumerate}
 	\item 编译器
-	      首先要修改的肯定是编译器。要把原来的C语言编译器（变量CC）和C++编译器（变量CPP）的值改成神威里的编译器{\codefont sw5cc}和{\codefont sw5CC}；
+	      首先要修改的肯定是编译器。要把原来的C语言编译器（变量CC）和C++编译器（变量CPP）的值改成神威里的编译器\code{sw5cc}和\code{sw5CC}；
 	\item 编译选项
-	      其次是要改编译选项（变量CFLAGS）。原来的一些编译选项在{\codefont sw5cc}里面是不支持的，然后因为目前只是移植所以编译选项设置为{\codefont -host}全部在主核编译运行；
+	      其次是要改编译选项（变量CFLAGS）。原来的一些编译选项在\code{sw5cc}里面是不支持的，然后因为目前只是移植所以编译选项设置为\code{-host}全部在主核编译运行；
 	\item 连接选项
-	      在连接任务中，sw5cc连接时要加上{\codefont -hybrid}选项；
+	      在连接任务中，sw5cc连接时要加上\code{-hybrid}选项；
 	\item 运行方式
 	      原有的Makefile文件里面没有运行任务，要加一个运行任务（如\ref{sec:程序的运行}节）；
 	\item 其他修改
@@ -190,7 +190,7 @@ Makefile文件32$\sim$73行是编译选项的设置，其主要作用有二：
 
 经过以上修改，即可在Darknet根目录下运行“make”生成可执行文件、“make run”提交运行了。运行“make run”若任务队列返回了“usage: ./darknet <function>”即说明移植成功。
 
-\section{本章知识点总结}
+\section{本章总结}
 本章的主要脉络如下：
 \begin{enumerate}
 	\item 解析Darknet源码文件的结构；

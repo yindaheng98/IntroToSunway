@@ -41,6 +41,10 @@
 %- [math]% enable some extra math packages
 %- [xlink]% disable link colors
 \usepackage{Style/artracom}% user defined commands
+\usepackage{diagbox}
+\usepackage{multirow}
+\newcommand{\code}[1]{{\codefont #1 }}
+\newcommand{\tabincell}[2]{\begin{tabular}{@{}#1@{}}#2\end{tabular}}
 %---------------------------------------------------------------------------%
 %->> Document inclusion
 %---------------------------------------------------------------------------%

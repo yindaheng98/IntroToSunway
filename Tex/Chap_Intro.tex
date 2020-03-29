@@ -271,9 +271,9 @@ run:arrAdd
   bsub -I -b -q q_sw_expr -n 1 -cgsp 64 ./arrAdd
 \end{lstlisting}
 
-按照前面所讲的文件格式和命名规则，该Makefile定义了5个任务，其中默认任务为“arrAdd”，该文件生成可执行文件“arrAdd”；此外还有一个运行任务“run”和清理任务“clean”。该文件放在和源文件同一目录下，则可在该目录下运行“make”编译程序或运行“make run”执行程序等操作。
+按照前面所讲的文件格式和命名规则，该Makefile定义了5个任务，其中默认任务为“arrAdd”，该文件生成可执行文件“arrAdd”；此外还有一个运行任务“run”和清理任务“clean”。该文件放在和源文件同一目录下，则可在该目录下运行“make”编译程序或运行“make run”执行程序等操作。如果一切正常，上述并行优化方法的实际运行时间应该是用双重for循环计算的1/200。
 
-\section{总结}
+\section{本章总结}
 \subsection{知识点概括}
 本章主要介绍了在神威系统编写程序的流程和必须要知道的一些基本操作，内容可大致概括为图\ref{fig:Chap_Intro}。
 
